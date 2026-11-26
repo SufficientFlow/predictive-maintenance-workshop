@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Be the Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+
+<!-- Join -->
+<section id="screen-join" class="page" hidden>
+  <h1 class="title-xl">BE THE MODEL</h1>
+  <p class="tagline">Can you predict a breakdown better than the computer?</p>
+  <form id="join-form" class="panel join-card">
+    <label for="nickname">Your nickname</label>
+    <input id="nickname" maxlength="20" autocomplete="off" placeholder="e.g. BearingWhisperer" required>
+    <button class="btn-primary btn-block" type="submit">Start your shift</button>
+    <p class="hint">Only your first attempt per level counts on the leaderboard.</p>
+  </form>
+</section>
+
+<!-- Waiting for the host -->
+<section id="screen-waiting" class="page" hidden>
+  <p class="eyebrow">On shift: <span id="wait-nick"></span></p>
+  <h2 id="wait-title" class="title-l">Connecting…</h2>
+  <p id="wait-hint" class="tagline"></p>
+  <div class="panel brief">
+    <h3>What to look for in the temperature graph</h3>
+    <div class="brief-grid">
+      <figure><canvas data-pattern="steady"></canvas><figcaption><b>Steady, moving slightly up and down</b><span>Normal</span></figcaption></figure>
+      <figure><canvas data-pattern="building"></canvas><figcaption><b>Steadily building up</b><span>A wearing part</span></figcaption></figure>
+      <figure><canvas data-pattern="fluctuating"></canvas><figcaption><b>Fluctuating a lot</b><span>A broken part</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- Control room -->
+<section id="screen-room" hidden>
+  <header class="topbar">
+    <div class="brand"><span class="logo">BE THE MODEL</span><span id="hdr-level" class="muted"></span></div>
+    <div class="hdr-stats mono">
+      <span>TIME<b id="hdr-time">00:00</b></span>
+      <span>SCORE<b id="hdr-score" class="you">0</b></span>
+      <span id="hdr-eng-wrap">ENGINEERS FREE<b id="hdr-eng">2/2</b></span>
+    </div>
+  </header>
+  <div class="room">
+    <div id="stats" class="stats"></div>
+    <div id="room-main" class="room-main">
+      <div id="machines" class="machines"></div>
+      <aside id="sidebar" class="panel sidebar">
+        <div id="engineers-box">
+          <h3>Engineers</h3>
+          <ul id="engineers" class="engineers"></ul>
+        </div>
+        <h3>Activity log</h3>
+        <p class="legend">◇ Engineer &nbsp; ○ System &nbsp; ⚑ You</p>
+        <ul id="log" class="log"></ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section id="screen-results" class="page" hidden>
+  <h2 id="res-title" class="title-l"></h2>
+  <div class="panel table-card">
+    <table class="table">
+      <thead><tr><th>Result</th><th>You</th><th class="model">Model</th></tr></thead>
+      <tbody id="res-body"></tbody>
+    </table>
+  </div>
+  <div id="res-totals" class="panel table-card" hidden>
+    <h3>All three levels</h3>
+    <table class="table">
+      <thead><tr><th>Level</th><th>You</th><th class="model">Model</th></tr></thead>
+      <tbody id="totals-body"></tbody>
+    </table>
+  </div>
+  <div id="replays"></div>
+  <p id="res-next" class="muted"></p>
+</section>
+
+</body>
+</html>

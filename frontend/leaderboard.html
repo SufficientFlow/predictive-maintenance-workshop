@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leaderboard · Be the Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<section class="page">
+  <h1 class="title-xl" style="font-size: 64px">Leaderboard</h1>
+  <div class="panel table-card">
+    <table class="table board">
+      <thead><tr><th style="width: 80px">#</th><th>Nickname</th><th>Points</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p id="note" class="hint" hidden>Example entries: no server connected.</p>
+  </div>
+</section>
+
+<script type="module">
+  // Expects GET /api/leaderboard -> [{nickname, points, isModel}], sorted or not.
+  const SAMPLE = [
+    { nickname: 'BearingWhisperer', points: 520 },
+    { nickname: 'rpm_goblin', points: 465 },
+    { nickname: 'THE MODEL', points: 410, isModel: true },
+    { nickname: 'coolant', points: 365 },
+    { nickname: 'nightshift', points: 290 },
+  ];
+
+  async function refresh() {
+    let rows = SAMPLE;
+    let sample = true;
+    try {
+      const res = await fetch('/api/leaderboard', { cache: 'no-store' });
+      if (res.ok) { rows = await res.json(); sample = false; }
+    } catch {}
+    rows = [...rows].sort((a, b) => b.points - a.points);
+    document.getElementById('note').hidden = !sample;
+    document.getElementById('rows').replaceChildren(...rows.map((r, i) => {
+      const tr = document.createElement('tr');
+      if (r.isModel) tr.className = 'model-row';
+      for (const text of [i + 1, r.nickname, r.points]) {
+        const td = document.createElement('td');
+        td.textContent = String(text);
+        tr.append(td);
+      }
+      return tr;
+    }));
+  }
+
+  refresh();
+  setInterval(refresh, 5000);
+</script>
+</body>
+</html>
